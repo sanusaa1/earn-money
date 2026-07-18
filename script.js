@@ -8,6 +8,7 @@ get,
 child
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+
 const firebaseConfig = {
 apiKey: "AIzaSyCCS0jLa76zh0ROcHXthmJ2GgMwOCSKKnc",
 authDomain: "ftp-earning-app.firebaseapp.com",
@@ -19,19 +20,20 @@ appId: "1:357389565630:web:da32026f969599d43528ef",
 measurementId: "G-QDMY4YJPV4"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 
-document.addEventListener("DOMContentLoaded", () => {
 
+document.addEventListener("DOMContentLoaded",()=>{
 
 
 function generateReferralCode(){
 
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    let code = "";
+    let code="";
 
     for(let i=0;i<6;i++){
 
@@ -45,54 +47,77 @@ function generateReferralCode(){
 
 }
 
-const loginBtn = document.querySelector(".login");
-const signupBtn = document.querySelector(".signup");
+
+
 const passwordBtn = document.querySelector(".password-btn");
 const passwordInput = document.getElementById("password");
 
+
 const signupForm = document.getElementById("signupForm");
+
 
 const phoneInput = document.getElementById("phone");
 const nicknameInput = document.getElementById("nickname");
 
 const inviteCodeInput = document.getElementById("inviteCode");
+
+
 const popupOk = document.getElementById("popupOk");
 
-popupOk.addEventListener("click", () => {
-    document.getElementById("popup").style.display = "none";
+
+
+/* POPUP CLOSE */
+
+if(popupOk){
+
+popupOk.addEventListener("click",()=>{
+
+    document.getElementById("popup").style.display="none";
+
 });
 
-/* LOGIN PAGE */
+}
 
 
-/* SIGNUP PAGE */
-signupBtn.addEventListener("click", () => {
-    window.location.href = "download.html";
-});
 
-/* SHOW / HIDE PASSWORD */
-passwordBtn.addEventListener("click", () => {
 
-    if (passwordInput.type === "password") {
+/* PASSWORD SHOW HIDE */
 
-        passwordInput.type = "text";
+if(passwordBtn){
+
+passwordBtn.addEventListener("click",()=>{
+
+
+    if(passwordInput.type==="password"){
+
+
+        passwordInput.type="text";
+
 
         passwordBtn.innerHTML =
-            '<i class="fa-solid fa-eye"></i>';
+        '<i class="fa-solid fa-eye"></i>';
 
-    } else {
 
-        passwordInput.type = "password";
+    }else{
+
+
+        passwordInput.type="password";
+
 
         passwordBtn.innerHTML =
-            '<i class="fa-regular fa-user"></i>';
+        '<i class="fa-regular fa-user"></i>';
+
     }
 
+
 });
 
+}
 
-// AUTO FILL INVITE CODE FROM URL
 
+
+
+/* AUTO FILL REFERRAL CODE */
 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -100,197 +125,422 @@ const urlParams = new URLSearchParams(window.location.search);
 const refCode = urlParams.get("ref");
 
 
-if(refCode){
+if(refCode && inviteCodeInput){
+
 
     inviteCodeInput.value = refCode;
 
-    // optional: user edit na kar sake
-    inviteCodeInput.readOnly = true;
+    inviteCodeInput.readOnly=true;
+
 
 }
 
-/* OTP BUTTON */
+
+
 
 
 /* REGISTER USER */
-signupForm.addEventListener("submit", async (e) => {
-
-    e.preventDefault();
-
-    const phone = phoneInput.value.trim();
-    const password = passwordInput.value.trim();
-    const nickname = nicknameInput.value.trim();
-    const inviteCode = inviteCodeInput.value.trim();
-    const myReferralCode = generateReferralCode();
-    
-
-    if (phone.length !== 10) {
-
-        showPopup("Error","Enter valid phone number","error");
-        return;
-    }
-
-    if (password.length < 6) {
-
-       showPopup("Error","Password must be at least 6 characters","error");
-        return;
-    }
-
-    if (nickname === "") {
-
-        showPopup("Error","Enter nickname","error");
-        return;
-    }
 
 
-    try {
+if(signupForm){
 
-        const dbRef = ref(db);
 
-        const existingUser = await get(
-            child(dbRef, "Users/" + phone)
-        );
+signupForm.addEventListener("submit",async(e)=>{
 
-        let referrerPhone = null;
 
-        if(inviteCode!=""){
+e.preventDefault();
 
-            const users = await get(ref(db,"Users"));
 
-            if(users.exists()){
 
-                users.forEach(user=>{
+const phone = phoneInput.value.trim();
 
-                    if(user.val().referralCode===inviteCode){
+const password = passwordInput.value.trim();
 
-                        referrerPhone=user.key;
+const nickname = nicknameInput.value.trim();
 
-                    }
+const inviteCode = inviteCodeInput.value.trim();
 
-                });
 
-            }
+const myReferralCode = generateReferralCode();
 
-            if(referrerPhone===null){
 
-                showPopup("Error","Invalid Invite Code","error");
 
-                return;
+if(phone.length!==10){
 
-            }
+showPopup(
+"Error",
+"Enter valid phone number",
+"error"
+);
 
-        }
+return;
 
-        if (existingUser.exists()) {
-            showPopup("Error","Phone number already registered","error");
-            return;
-        }
+}
+
+
+
+if(password.length<6){
+
+showPopup(
+"Error",
+"Password must be at least 6 characters",
+"error"
+);
+
+return;
+
+}
+
+
+
+if(nickname===""){
+
+
+showPopup(
+"Error",
+"Enter nickname",
+"error"
+);
+
+
+return;
+
+}
 
 
 
 
-await set(ref(db,"Users/"+phone),{
+
+try{
+
+
+const dbRef = ref(db);
+
+
+
+const existingUser = await get(
+
+child(dbRef,"Users/"+phone)
+
+);
+
+
+
+let referrerPhone=null;
+
+
+
+
+/* CHECK INVITE CODE */
+
+
+if(inviteCode!==""){
+
+
+const users = await get(
+ref(db,"Users")
+);
+
+
+
+if(users.exists()){
+
+
+users.forEach(user=>{
+
+
+if(user.val().referralCode===inviteCode){
+
+
+referrerPhone=user.key;
+
+
+}
+
+
+});
+
+
+}
+
+
+
+
+if(referrerPhone===null){
+
+
+showPopup(
+"Error",
+"Invalid Invite Code",
+"error"
+);
+
+
+return;
+
+
+}
+
+
+}
+
+
+
+
+
+
+if(existingUser.exists()){
+
+
+showPopup(
+"Error",
+"Phone number already registered",
+"error"
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+/* SAVE USER */
+
+
+await set(
+ref(db,"Users/"+phone),
+{
+
 
 phone:"+91"+phone,
 
+
 password:password,
+
 
 nickname:nickname,
 
+
 inviteCode:inviteCode,
+
 
 referralCode:myReferralCode,
 
+
 balance:0,
+
 
 withdrawBalance:0,
 
+
 totalIncome:0,
+
 
 todayIncome:0,
 
+
 teamIncome:0,
+
+
 teamCount:0,
+
 
 status:"active",
 
+
 registerTime:Date.now()
 
-});
+
+}
+
+);
+
+
+
+
+
+
+
+/* ADD TEAM */
+
 
 if(referrerPhone){
 
-    await set(
 
-        ref(db,"Users/"+referrerPhone+"/team/"+phone),
 
-        {
+await set(
 
-            phone:"+91"+phone,
-                nickname:nickname,
-                referralCode: myReferralCode,
-                joinTime:Date.now()
+ref(
+db,
+"Users/"+referrerPhone+"/team/"+phone
+),
 
-        }
+{
 
-    );
 
-    const referrerSnap = await get(ref(db,"Users/"+referrerPhone));
+phone:"+91"+phone,
 
-    const oldCount = Number(referrerSnap.val().teamCount || 0);
 
-    await set(
-        ref(db,"Users/"+referrerPhone+"/teamCount"),
-        oldCount + 1
-    );
+nickname:nickname,
+
+
+referralCode:myReferralCode,
+
+
+joinTime:Date.now()
+
 
 }
-      showPopup("Success","Account Created Successfully");
 
-      signupForm.reset();
-
-      // chahe to 2 second baad login page bhej do
-      setTimeout(()=>{
-          location.href="login/index.html";
-      },2000);
+);
 
 
 
-    } catch (error) {
 
-          console.log(error.code);
-          console.log(error.message);
+const referrerSnap = await get(
 
-          showPopup(
-              "Firebase Error",
-              error.message
-          );
+ref(db,"Users/"+referrerPhone)
 
-      }
+);
+
+
+
+const oldCount = Number(
+referrerSnap.val().teamCount || 0
+);
+
+
+
+await set(
+
+ref(
+db,
+"Users/"+referrerPhone+"/teamCount"
+),
+
+oldCount+1
+
+);
+
+
+
+}
+
+
+
+
+
+
+showPopup(
+"Success",
+"Account Created Successfully"
+);
+
+
+
+signupForm.reset();
+
+
+
+
+setTimeout(()=>{
+
+
+location.href="download.html";
+
+
+},2000);
+
+
+
+
+
+
+}catch(error){
+
+
+
+console.log(error);
+
+
+
+showPopup(
+
+"Firebase Error",
+
+error.message,
+
+"error"
+
+);
+
+
+
+}
+
+
 
 });
 
+
+}
+
+
+
 });
+
+
+
+
 
 
 function showPopup(title,message,type="success"){
 
-        document.getElementById("popupTitle").innerText = title;
-        document.getElementById("popupMessage").innerText = message;
 
-        const icon = document.getElementById("popupIcon");
+const popup=document.getElementById("popup");
 
-        if(type==="error"){
-            icon.innerHTML="✖";
-            icon.style.background="#ff3b30";
-        }else{
-            icon.innerHTML="✔";
-            icon.style.background="#19c463";
-        }
 
-        document.getElementById("popup").style.display="flex";
-    }
+if(!popup) return;
 
-    function closePopup(){
-        document.getElementById("popup").style.display="none";
-    }
+
+
+document.getElementById("popupTitle").innerText=title;
+
+
+document.getElementById("popupMessage").innerText=message;
+
+
+
+const icon=document.getElementById("popupIcon");
+
+
+
+if(type==="error"){
+
+
+icon.innerHTML="✖";
+
+icon.style.background="#ff3b30";
+
+
+}else{
+
+
+icon.innerHTML="✔";
+
+icon.style.background="#19c463";
+
+
+}
+
+
+
+popup.style.display="flex";
+
+}
