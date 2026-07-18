@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Download App</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+
+}
+
+
+.container{
+
+    width:90%;
+    max-width:420px;
+
+    background:rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:25px;
+
+    padding:40px 25px;
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,0.3);
+
+    animation:up .8s ease;
+
+}
+
+
+@keyframes up{
+
+from{
+transform:translateY(50px);
+opacity:0;
+}
+
+to{
+transform:translateY(0);
+opacity:1;
+}
+
+}
+
+
+
+.logo{
+
+width:100px;
+height:100px;
+
+margin:auto;
+
+border-radius:50%;
+
+background:white;
+
+display:flex;
+
+align-items:center;
+justify-content:center;
+
+font-size:55px;
+
+font-weight:bold;
+
+color:#19c463;
+
+box-shadow:
+0 0 30px rgba(255,255,255,.5);
+
+}
+
+
+
+h1{
+
+margin-top:25px;
+
+font-size:32px;
+
+}
+
+
+p{
+
+margin-top:12px;
+
+color:#ddd;
+
+font-size:16px;
+
+line-height:1.6;
+
+}
+
+
+
+.version{
+
+display:inline-block;
+
+margin-top:20px;
+
+padding:8px 20px;
+
+background:rgba(255,255,255,.15);
+
+border-radius:30px;
+
+font-size:14px;
+
+}
+
+
+
+
+.download-btn{
+
+margin-top:35px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:12px;
+
+
+background:
+linear-gradient(135deg,#19c463,#00a86b);
+
+
+color:white;
+
+text-decoration:none;
+
+
+padding:18px;
+
+border-radius:50px;
+
+font-size:20px;
+
+font-weight:600;
+
+
+box-shadow:
+
+0 10px 30px rgba(25,196,99,.5);
+
+
+transition:.3s;
+
+}
+
+
+
+.download-btn:hover{
+
+transform:translateY(-5px);
+
+box-shadow:
+
+0 15px 40px rgba(25,196,99,.7);
+
+}
+
+
+
+.features{
+
+margin-top:30px;
+
+text-align:left;
+
+}
+
+
+.features div{
+
+margin:15px 0;
+
+font-size:15px;
+
+}
+
+
+
+.features i{
+
+color:#19c463;
+
+margin-right:10px;
+
+}
+
+
+
+.footer{
+
+margin-top:30px;
+
+font-size:13px;
+
+color:#bbb;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="logo">
+
+H
+
+</div>
+
+
+
+<h1>
+Honda App
+</h1>
+
+
+<p>
+Download our latest application and enjoy fast, secure and easy access.
+</p>
+
+
+<div class="version">
+
+<i class="fa-solid fa-mobile-screen"></i>
+
+Version 1.0.0
+
+</div>
+
+
+
+<a class="download-btn" href="app.apk" download>
+
+<i class="fa-solid fa-download"></i>
+
+Download App
+
+</a>
+
+
+
+<div class="features">
+
+
+<div>
+<i class="fa-solid fa-check"></i>
+Fast Performance
+</div>
+
+
+<div>
+<i class="fa-solid fa-shield-halved"></i>
+Secure & Safe
+</div>
+
+
+<div>
+<i class="fa-solid fa-cloud-arrow-down"></i>
+Easy Installation
+</div>
+
+
+</div>
+
+
+
+<div class="footer">
+
+© 2026 Honda App. All Rights Reserved.
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>
