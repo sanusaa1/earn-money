@@ -63,13 +63,11 @@ popupOk.addEventListener("click", () => {
 });
 
 /* LOGIN PAGE */
-loginBtn.addEventListener("click", () => {
-    window.location.href = "login/index.html";
-});
+
 
 /* SIGNUP PAGE */
 signupBtn.addEventListener("click", () => {
-    window.location.href = "index.html";
+    window.location.href = "download.html";
 });
 
 /* SHOW / HIDE PASSWORD */
